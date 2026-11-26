@@ -103,6 +103,52 @@ def test_face_profile_repository_rejects_invalid_embedding(session: Session) -> 
         )
 
 
+def test_face_profile_candidates_filter_in_sql_and_keep_id_order(session: Session) -> None:
+    user = _add_user(SQLAlchemyUserRepository(session))
+    repository = SQLAlchemyFaceProfileRepository(session)
+    first = repository.add(
+        FaceProfile(
+            id=None,
+            user_id=user.id,
+            embedding=np.array([1.0, 0.0], dtype=np.float32),
+            model_name="buffalo_s",
+            created_at=datetime(2026, 9, 21, 9, tzinfo=UTC),
+        )
+    )
+    session.add_all(
+        [
+            FaceProfileORM(
+                user_id=user.id,
+                embedding=b"invalid",
+                embedding_dim=2,
+                model_name="other",
+                created_at=datetime(2026, 9, 21, 10, tzinfo=UTC),
+            ),
+            FaceProfileORM(
+                user_id=user.id,
+                embedding=b"invalid",
+                embedding_dim=3,
+                model_name="buffalo_s",
+                created_at=datetime(2026, 9, 21, 11, tzinfo=UTC),
+            ),
+        ]
+    )
+    session.flush()
+    last = repository.add(
+        FaceProfile(
+            id=None,
+            user_id=user.id,
+            embedding=np.array([0.0, 1.0], dtype=np.float32),
+            model_name="buffalo_s",
+            created_at=datetime(2026, 9, 21, 12, tzinfo=UTC),
+        )
+    )
+
+    candidates = repository.list_candidates(model_name="buffalo_s", embedding_dim=2)
+
+    assert [profile.id for profile in candidates] == [first.id, last.id]
+
+
 def test_check_in_repository_crud_status_mapping(session: Session) -> None:
     user = _add_user(SQLAlchemyUserRepository(session))
     profile = SQLAlchemyFaceProfileRepository(session).add(
