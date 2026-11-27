@@ -149,11 +149,16 @@ class RunnerTests(unittest.TestCase):
                     writer.writerows(rows)
 
     def test_http_cell_runs_on_measured_before_audit(self):
-        from unittest.mock import AsyncMock, patch
+        from unittest.mock import patch
 
         oracle = runner.extend(self.db, "single")
         db = self.root / "deferred.db"
         shutil.copyfile(self.db, db)
+        real_sleep = asyncio.sleep
+
+        async def fast_sleep(_delay):
+            await real_sleep(0)
+
         with closing(sqlite3.connect(db)) as conn:
 
             def respond(_request):
@@ -173,7 +178,7 @@ class RunnerTests(unittest.TestCase):
             with (
                 patch.object(httpx, "AsyncClient", return_value=client),
                 patch.dict(os.environ, {"SEED_USER_PASSWORD": "test-only"}),
-                patch.object(runner.asyncio, "sleep", new=AsyncMock()),
+                patch.object(runner.asyncio, "sleep", side_effect=fast_sleep),
             ):
                 rows, meta = asyncio.run(
                     runner.http_cell(
