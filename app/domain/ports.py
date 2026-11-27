@@ -39,7 +39,17 @@ class FaceProfileRepository(ABC):
 
     @abstractmethod
     def list_all(self) -> list[FaceProfile]:
-        """Return all profiles used by the face-matching scan."""
+        """Return all profiles in the repository's stable order."""
+
+    def list_candidates(self, *, model_name: str, embedding_dim: int) -> list[FaceProfile]:
+        """Return compatible profiles in the repository's stable order."""
+        return [
+            profile
+            for profile in self.list_all()
+            if profile.model_name == model_name
+            and profile.embedding.ndim == 1
+            and profile.embedding.size == embedding_dim
+        ]
 
     @abstractmethod
     def list_by_user(self, user_id: int) -> list[FaceProfile]:

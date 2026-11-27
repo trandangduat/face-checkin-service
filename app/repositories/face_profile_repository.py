@@ -35,6 +35,17 @@ class SQLAlchemyFaceProfileRepository(FaceProfileRepository):
         rows = self._session.scalars(select(FaceProfileORM).order_by(FaceProfileORM.id)).all()
         return [face_profile_to_domain(row) for row in rows]
 
+    def list_candidates(self, *, model_name: str, embedding_dim: int) -> list[FaceProfile]:
+        statement = (
+            select(FaceProfileORM)
+            .where(
+                FaceProfileORM.model_name == model_name,
+                FaceProfileORM.embedding_dim == embedding_dim,
+            )
+            .order_by(FaceProfileORM.id)
+        )
+        return [face_profile_to_domain(row) for row in self._session.scalars(statement).all()]
+
     def list_by_user(self, user_id: int) -> list[FaceProfile]:
         statement = (
             select(FaceProfileORM)
