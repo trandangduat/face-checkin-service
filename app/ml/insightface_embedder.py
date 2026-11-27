@@ -33,7 +33,14 @@ class InsightFaceEmbedder(FaceEmbedder):
     ) -> None:
         self._model_name = model_name
         if analysis is None:
-            runtime = FaceAnalysis(name=model_name, root=model_root, providers=list(providers))
+            # Check-in chỉ dùng số khuôn mặt và embedding; landmark 68/106 điểm và
+            # giới tính/tuổi của pack sẽ chạy trên mỗi khuôn mặt nếu không lọc.
+            runtime = FaceAnalysis(
+                name=model_name,
+                root=model_root,
+                allowed_modules=["detection", "recognition"],
+                providers=list(providers),
+            )
             runtime.prepare(ctx_id=0, det_size=detection_size)
             self._analysis: _FaceAnalysis = runtime
         else:

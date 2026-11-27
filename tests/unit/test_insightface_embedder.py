@@ -10,7 +10,7 @@ from app.domain import (
     MultipleFacesDetected,
     NoFaceDetected,
 )
-from app.ml import InsightFaceEmbedder
+from app.ml import InsightFaceEmbedder, insightface_embedder
 
 
 class FakeAnalysis:
@@ -27,6 +27,32 @@ def _image_bytes() -> bytes:
     ok, encoded = cv2.imencode(".png", np.full((8, 8, 3), 127, dtype=np.uint8))
     assert ok
     return encoded.tobytes()
+
+
+def test_default_runtime_loads_only_detection_and_recognition(monkeypatch) -> None:
+    created: list[dict[str, object]] = []
+
+    class RecordingAnalysis(FakeAnalysis):
+        def __init__(self, **kwargs: object) -> None:
+            super().__init__([])
+            created.append(kwargs)
+
+        def prepare(self, **kwargs: object) -> None:
+            created.append(kwargs)
+
+    monkeypatch.setattr(insightface_embedder, "FaceAnalysis", RecordingAnalysis)
+
+    InsightFaceEmbedder(model_name="buffalo_s")
+
+    assert created == [
+        {
+            "name": "buffalo_s",
+            "root": "~/.insightface",
+            "allowed_modules": ["detection", "recognition"],
+            "providers": ["CPUExecutionProvider"],
+        },
+        {"ctx_id": 0, "det_size": (640, 640)},
+    ]
 
 
 def test_embed_returns_contiguous_float32_l2_normalized_vector() -> None:
