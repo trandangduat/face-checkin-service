@@ -187,7 +187,7 @@ def audit(db, before, rows, history, oracle):
     return len(new), sorted(expected) == sorted(new) and len(ids) == len(set(ids))
 
 
-async def http_cell(args, oracle, image, db, pid):
+async def http_cell(args, oracle, image, db, pid, on_measured=None):
     history = args.scenario == "E2"
     scenario = "history" if history else "checkin"
     config = bench.parse_config(
@@ -221,6 +221,8 @@ async def http_cell(args, oracle, image, db, pid):
             monitor.cancel()
             with suppress(asyncio.CancelledError):
                 await monitor
+    if on_measured is not None:
+        on_measured()
     actual, audit_ok = audit(db, before, warm + rows, history, oracle)
     expected = 0 if history else count + len(warm)
     ok = sum(r[2] for r in rows)
@@ -316,7 +318,16 @@ def run(args):
             )
             try:
                 wait_until_healthy(f"http://127.0.0.1:{args.port}", server)
-                rows, data = asyncio.run(http_cell(args, oracle, img.read_bytes(), db, server.pid))
+                rows, data = asyncio.run(
+                    http_cell(
+                        args,
+                        oracle,
+                        img.read_bytes(),
+                        db,
+                        server.pid,
+                        on_measured=lambda: stop_server(server),
+                    )
+                )
             finally:
                 stop_server(server)
     with (folder / "requests.csv").open("x", newline="") as stream:

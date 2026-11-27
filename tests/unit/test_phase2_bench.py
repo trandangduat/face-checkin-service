@@ -148,6 +148,41 @@ class RunnerTests(unittest.TestCase):
                     writer.writerow(("latency_ms", "status", "body_ok", "record_id"))
                     writer.writerows(rows)
 
+    def test_http_cell_runs_on_measured_before_audit(self):
+        from unittest.mock import AsyncMock, patch
+
+        oracle = runner.extend(self.db, "single")
+        db = self.root / "deferred.db"
+        shutil.copyfile(self.db, db)
+        with closing(sqlite3.connect(db)) as conn:
+
+            def respond(_request):
+                row = conn.execute(
+                    "INSERT INTO check_in_records(user_id,matched_face_profile_id,status) "
+                    "VALUES(7,9,'success')"
+                )
+                return httpx.Response(
+                    201,
+                    json=dict(
+                        status="success", user_id=7, matched_face_profile_id=9, id=row.lastrowid
+                    ),
+                )
+
+            client = httpx.AsyncClient(transport=httpx.MockTransport(respond), trust_env=False)
+            args = Namespace(scenario="E1", port=8765, count=6, c=2)
+            with (
+                patch.object(httpx, "AsyncClient", return_value=client),
+                patch.dict(os.environ, {"SEED_USER_PASSWORD": "test-only"}),
+                patch.object(runner.asyncio, "sleep", new=AsyncMock()),
+            ):
+                rows, meta = asyncio.run(
+                    runner.http_cell(
+                        args, oracle, b"test", db, os.getpid(), on_measured=conn.commit
+                    )
+                )
+        self.assertTrue(meta["passed"])
+        self.assertEqual((len(rows), meta["audit_actual"]), (6, 11))
+
     def test_failed_requests_count_toward_latency(self):
         async def send():
             raise httpx.ReadTimeout("timeout")
