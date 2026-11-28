@@ -1,0 +1,101 @@
+{
+  "app": "247db09d98f4cedcc9ad22fdbd112ba328324aa9",
+  "seed": 23020023,
+  "image": "aba1717aac26285814d6649c821399674407f5164dc5dbba6417df5fbee6d299",
+  "fixtures": {
+    "single": {
+      "profile": 1,
+      "user": 2,
+      "models": {
+        "buffalo_s": 1
+      },
+      "history": [
+        1
+      ],
+      "sha256": "d95e24e6696ce035f8c76318c8bee2f3f6d800a705667aa973e7a5ac56815332"
+    },
+    "history": {
+      "profile": 1,
+      "user": 2,
+      "models": {
+        "buffalo_s": 1
+      },
+      "history": [
+        1,
+        63,
+        62,
+        61,
+        60,
+        59,
+        58,
+        57,
+        56,
+        55,
+        54,
+        53,
+        52,
+        51,
+        50,
+        49,
+        48,
+        47,
+        46,
+        45,
+        44,
+        43,
+        42,
+        41,
+        40,
+        39,
+        38,
+        37,
+        36,
+        35,
+        34,
+        33,
+        32,
+        31,
+        30,
+        29,
+        28,
+        27,
+        26,
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        16,
+        15
+      ],
+      "sha256": "522799b88bdaab06adc8fd57b28ed810d7dbf9b35330181ef9daa7e20315358d"
+    },
+    "pure": {
+      "profile": 1,
+      "user": 2,
+      "models": {
+        "buffalo_s": 1000
+      },
+      "history": [
+        1
+      ],
+      "sha256": "826cf7d3610730c85d9f39cbca739dfe9468a2d0280fe42cee843b8ab24c9b75"
+    },
+    "mixed": {
+      "profile": 1,
+      "user": 2,
+      "models": {
+        "buffalo_s": 500,
+        "other": 500
+      },
+      "history": [
+        1
+      ],
+      "sha256": "bed2fcd6434cf75f0dd8761c7b9cb94cf362b9b884d99cdee15194e345a5ed7e"
+    }
+  }
+}

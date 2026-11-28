@@ -1,0 +1,76 @@
+{
+  "expected": 60,
+  "actual": 60,
+  "audit_actual": 65,
+  "audit_expected": 65,
+  "warmup_ok": 5,
+  "warmup_expected": 5,
+  "statuses": {
+    "201": 60
+  },
+  "passed": true,
+  "errors": 0,
+  "timeouts": 0,
+  "http_errors": 0,
+  "body_errors": 0,
+  "cpu_system": 99.75594874923733,
+  "cpu_process": 390.53822870752555,
+  "rss_kib": 1018576,
+  "rps": 7.320308809716185,
+  "success_rps": 7.320308809716185,
+  "p50_ms": 539.4419160002144,
+  "p95_ms": 661.3747020001028,
+  "p99_ms": 782.9829429999791,
+  "measured_at": 1795886424.6871545,
+  "app": "247db09d98f4cedcc9ad22fdbd112ba328324aa9",
+  "runner": "4930c43e9548f8078ef92472a7b2c278a1c52479",
+  "lock": "ddaac31b49e3ee61f888fb44b63e81b5a4cd1a574dc520babd6aea22eb0f085b",
+  "snapshot": "d95e24e6696ce035f8c76318c8bee2f3f6d800a705667aa973e7a5ac56815332",
+  "image": "aba1717aac26285814d6649c821399674407f5164dc5dbba6417df5fbee6d299",
+  "scenario": "E1",
+  "fixture": "single",
+  "concurrency": 4,
+  "round": 1,
+  "session": "a1281bb702ea4b06ad3ad2a86ac4b81c",
+  "workers": 1,
+  "client_python": "3.12.3",
+  "os": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "cpu_count": 4,
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_WAIT_POLICY": null
+  },
+  "machine": {
+    "python": "3.12.3",
+    "sqlite": "3.45.1",
+    "packages": {
+      "numpy": "2.2.6",
+      "insightface": "2.0",
+      "onnxruntime": "1.23.2",
+      "uvicorn": "0.53.0"
+    },
+    "model_sha256": {
+      "1k3d68.onnx": "df5c06b8a0c12e422b2ed8947b8869faa4105387f199c477af038aa01f9a45cc",
+      "2d106det.onnx": "f001b856447c413801ef5c42091ed0cd516fcd21f2d6b79635b1e733a7109dbf",
+      "det_500m.onnx": "5e4447f50245bbd7966bd6c0fa52938c61474a04ec7def48753668a9d8b4ea3a",
+      "genderage.onnx": "4fde69b1c810857b88c64a335084f1c3fe8f01246c9a191b48c7bb756d6652fb",
+      "w600k_mbf.onnx": "9cc6e4a75f0e2bf0b1aed94578f144d15175f357bdc05e815e5c4a02b319eb4f"
+    },
+    "cpu": "model name\t: Intel(R) Xeon(R) CPU @ 2.20GHz",
+    "affinity": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "quota": "400000 100000",
+    "ram": "MemTotal:       32869296 kB",
+    "available_providers": [
+      "AzureExecutionProvider",
+      "CPUExecutionProvider"
+    ],
+    "token_minutes": "120"
+  }
+}

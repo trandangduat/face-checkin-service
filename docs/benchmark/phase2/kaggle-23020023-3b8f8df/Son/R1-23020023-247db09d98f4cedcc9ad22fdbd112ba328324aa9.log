@@ -1,0 +1,169 @@
+test_matching_skips_different_dimension (__main__.TransactionTests.test_matching_skips_different_dimension) ... ok
+test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) ... /tmp/phase2-private-w0wenshp/A/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+  _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=0) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=1) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=2) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=3) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=4) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=5) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=6) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=7) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=8) ... FAIL
+  test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=9) ... FAIL
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(21, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(21, 'unmatched')
+
+- [(21, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(22, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(22, 'unmatched')
+
+- [(22, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(23, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(23, 'unmatched')
+
+- [(23, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(24, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(24, 'unmatched')
+
+- [(24, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(25, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(25, 'unmatched')
+
+- [(25, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(26, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(26, 'unmatched')
+
+- [(26, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=6)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(27, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(27, 'unmatched')
+
+- [(27, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(28, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(28, 'unmatched')
+
+- [(28, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=8)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(29, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(29, 'unmatched')
+
+- [(29, 'unmatched')]
++ []
+
+======================================================================
+FAIL: test_r1_ten_independent_requests_per_case (__main__.TransactionTests.test_r1_ten_independent_requests_per_case) (case='business', trial=9)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/phase2-private-w0wenshp/runner/tests/unit/test_phase2_bench.py", line 461, in test_r1_ten_independent_requests_per_case
+    self.assertEqual(delta, [(body["record_id"], audit)] if audit else [])
+AssertionError: Lists differ: [(30, 'unmatched')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(30, 'unmatched')
+
+- [(30, 'unmatched')]
++ []
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.368s
+
+FAILED (failures=10)

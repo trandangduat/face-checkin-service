@@ -1,0 +1,5 @@
+scenario,concurrency,requests,elapsed_seconds,throughput_rps,p50_ms,p95_ms,p99_ms,min_ms,mean_ms,max_ms,ok_count,error_count,cpu_percent_system,cpu_percent_server,statuses
+checkin,1,6,1.1712,5.123,200.05,216.96,216.96,151.84,195.15,216.96,6,0,77.7,306.5,201=6
+checkin,2,6,0.8127,7.383,264.23,300.11,300.11,233.04,265.05,300.11,6,0,92.9,366.7,201=6
+history,1,12,0.0851,141.009,6.99,7.38,7.38,6.68,7.05,7.38,12,0,,,200=12
+history,2,12,0.0684,175.353,10.58,14.4,14.4,9.47,11.12,14.4,12,0,,,200=12

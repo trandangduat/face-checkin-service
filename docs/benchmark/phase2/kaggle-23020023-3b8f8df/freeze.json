@@ -1,0 +1,12 @@
+{
+  "runner": "4930c43e9548f8078ef92472a7b2c278a1c52479",
+  "A": "247db09d98f4cedcc9ad22fdbd112ba328324aa9",
+  "rng": 23020023,
+  "ttl_minutes": 120,
+  "session": "a1281bb702ea4b06ad3ad2a86ac4b81c",
+  "E1_gain": 10,
+  "E3_mixed_probe_gain": 20,
+  "E2_E3_pure_max_regression": 10,
+  "E1_success_rps_max_loss": 5,
+  "pilot_finished": "2026-11-28T17:19:16.492138+00:00"
+}
