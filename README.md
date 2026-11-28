@@ -209,4 +209,9 @@ toàn bộ tài liệu nằm ở [phụ lục](#phụ-lục-danh-mục-tài-li�
 
 ## Nghiệm thu Phase 2
 
-[Báo cáo Kaggle CPU](docs/phase2-kaggle.md) ghi các phép đo đã chạy, ngưỡng chấp nhận và trạng thái từng phép thử. [Notebook tái lập](docs/benchmark/phase2/kaggle-23020023.ipynb) dùng chung snapshot cho hai phiên bản.
+Trên **Kaggle CPU** (`Intel Xeon @ 2.20 GHz`, 4 vCPU, SQLite, 1 worker, 3 cặp A–B/B–A/A–B dùng chung snapshot từ `247db09`), bản tích hợp **B (`3b8f8df`)** đạt toàn bộ tiêu chí nghiệm thu so với **A (`247db09`)**:
+- **Inference & End-to-end (`E1` `C=4`):** `p95` giảm **64,76%** (`706,78 → 249,03 ms`), `success_rps` tăng **+204,20%** (`7,41 → 22,55 RPS`), peak RSS giảm **48,19%** (`1.011.400 → 524.012 KiB`); `M1` hot `p95` giảm **75,98%** (kết quả âm: `cold_init_ms` tăng nhẹ `+2,76%`).
+- **Matching (`probe` 1.000 profile `C=1`):** gallery hỗn hợp giảm **73,45%** (`78,55 → 20,85 ms`), gallery thuần gần như giữ nguyên (`−0,87%`).
+- **Đường đọc (`E2` `C=4`) & Transaction (`R1`):** `E2 p95` không thoái lui (`−0,05%`); `R1` giảm từ **10/10 lỗi ghi dở** ở `A` xuống **0/50 lỗi** trên `B` (100% PASS).
+
+Xem chi tiết tại [Báo cáo Kaggle CPU](docs/phase2-kaggle.md), [bộ dữ liệu đo thô](docs/benchmark/phase2/kaggle-23020023-3b8f8df/), [notebook tái lập](docs/benchmark/phase2/kaggle-23020023.ipynb) và tài liệu ôn của 4 thành viên: [21020244](docs/explain_21020244.md), [23021685](docs/explain_23021685.md), [22025521](docs/explain_22025521.md), [23020023](docs/explain_23020023.md).

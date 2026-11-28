@@ -1,0 +1,51 @@
+case,trial,expected_http,actual_http,record_id,audit_count,audit_rows
+empty,1,422,422,1,1,"[[1, ""no_face""]]"
+empty,2,422,422,2,1,"[[2, ""no_face""]]"
+empty,3,422,422,3,1,"[[3, ""no_face""]]"
+empty,4,422,422,4,1,"[[4, ""no_face""]]"
+empty,5,422,422,5,1,"[[5, ""no_face""]]"
+empty,6,422,422,6,1,"[[6, ""no_face""]]"
+empty,7,422,422,7,1,"[[7, ""no_face""]]"
+empty,8,422,422,8,1,"[[8, ""no_face""]]"
+empty,9,422,422,9,1,"[[9, ""no_face""]]"
+empty,10,422,422,10,1,"[[10, ""no_face""]]"
+unmatched,1,404,404,11,1,"[[11, ""unmatched""]]"
+unmatched,2,404,404,12,1,"[[12, ""unmatched""]]"
+unmatched,3,404,404,13,1,"[[13, ""unmatched""]]"
+unmatched,4,404,404,14,1,"[[14, ""unmatched""]]"
+unmatched,5,404,404,15,1,"[[15, ""unmatched""]]"
+unmatched,6,404,404,16,1,"[[16, ""unmatched""]]"
+unmatched,7,404,404,17,1,"[[17, ""unmatched""]]"
+unmatched,8,404,404,18,1,"[[18, ""unmatched""]]"
+unmatched,9,404,404,19,1,"[[19, ""unmatched""]]"
+unmatched,10,404,404,20,1,"[[20, ""unmatched""]]"
+invalid,1,400,400,,0,[]
+invalid,2,400,400,,0,[]
+invalid,3,400,400,,0,[]
+invalid,4,400,400,,0,[]
+invalid,5,400,400,,0,[]
+invalid,6,400,400,,0,[]
+invalid,7,400,400,,0,[]
+invalid,8,400,400,,0,[]
+invalid,9,400,400,,0,[]
+invalid,10,400,400,,0,[]
+business,1,422,422,,1,"[[21, ""unmatched""]]"
+business,2,422,422,,1,"[[22, ""unmatched""]]"
+business,3,422,422,,1,"[[23, ""unmatched""]]"
+business,4,422,422,,1,"[[24, ""unmatched""]]"
+business,5,422,422,,1,"[[25, ""unmatched""]]"
+business,6,422,422,,1,"[[26, ""unmatched""]]"
+business,7,422,422,,1,"[[27, ""unmatched""]]"
+business,8,422,422,,1,"[[28, ""unmatched""]]"
+business,9,422,422,,1,"[[29, ""unmatched""]]"
+business,10,422,422,,1,"[[30, ""unmatched""]]"
+system,1,500,500,,0,[]
+system,2,500,500,,0,[]
+system,3,500,500,,0,[]
+system,4,500,500,,0,[]
+system,5,500,500,,0,[]
+system,6,500,500,,0,[]
+system,7,500,500,,0,[]
+system,8,500,500,,0,[]
+system,9,500,500,,0,[]
+system,10,500,500,,0,[]

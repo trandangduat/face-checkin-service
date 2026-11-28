@@ -1,0 +1,24 @@
+{
+  "base_url": "http://127.0.0.1:8000",
+  "concurrency_levels": [
+    1,
+    2
+  ],
+  "cpu_count": 4,
+  "git_commit": "247db09",
+  "history_requests_per_level": 12,
+  "image": "insightface-sample-crop",
+  "measured_at": "2026-11-28T17:14:05+00:00",
+  "notes": "backend=sqlite",
+  "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+  "processor": "x86_64",
+  "python_version": "3.12.3",
+  "requests_per_level": 6,
+  "scenarios": [
+    "checkin",
+    "history"
+  ],
+  "settle_seconds": 2.0,
+  "timeout_seconds": 60.0,
+  "warmup_per_level": 2
+}
