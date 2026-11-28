@@ -42,18 +42,14 @@ class CheckInService:
             )
             raise NoFaceDetected(str(exc), record_id=record.id) from exc
 
-        # Chỉ so sánh các vector cùng model và kích thước với ảnh đầu vào.
-        candidates = [
-            profile
-            for profile in self._profiles.list_all()
-            if profile.model_name == self._embedder.model_name
-            and profile.embedding.ndim == 1
-            and profile.embedding.shape == query.shape
-        ]
+        candidates = self._profiles.list_candidates(
+            model_name=self._embedder.model_name,
+            embedding_dim=query.size,
+        )
         if not candidates:
             self._raise_unmatched(None)
 
-        # Vector đã chuẩn hóa: tích vô hướng là cosine; clip sai số về [-1, 1].
+        # Giữ thứ tự phép tính norm cũ để tránh đổi quyết định tại ngưỡng float32.
         matrix = np.stack([normalize_embedding(profile.embedding) for profile in candidates])
         scores = np.clip(matrix @ query, -1.0, 1.0)
         best_index = int(np.argmax(scores))

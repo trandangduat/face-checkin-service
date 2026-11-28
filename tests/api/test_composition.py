@@ -71,7 +71,7 @@ def test_domain_errors_are_mapped_to_400_404_and_422(monkeypatch) -> None:
     }
 
 
-def test_session_commits_expected_domain_error_audit_record(tmp_path, monkeypatch) -> None:
+def test_session_rolls_back_domain_error_without_audit_record(tmp_path, monkeypatch) -> None:
     database_url = f"sqlite:///{(tmp_path / 'composition.db').as_posix()}"
     monkeypatch.setenv("JWT_SECRET", "test-secret")
     monkeypatch.setenv("DATABASE_URL", database_url)
@@ -102,6 +102,7 @@ def test_session_commits_expected_domain_error_audit_record(tmp_path, monkeypatc
 
     assert asyncio.run(request_error()) == 422
     with get_session_factory()() as session:
-        assert session.scalar(select(UserORM.email)) == "persisted@example.com"
+        # Dữ liệu đã flush phải bị rollback.
+        assert session.scalar(select(UserORM.email)) is None
 
     _reset_database_dependencies()

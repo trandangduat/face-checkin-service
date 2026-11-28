@@ -9,6 +9,7 @@ from app.domain import (
     CheckInRepository,
     CheckInStatus,
     FaceEmbedder,
+    FaceEmbeddingFailed,
     FaceProfile,
     FaceProfileRepository,
     NoFaceDetected,
@@ -17,6 +18,7 @@ from app.domain import (
     UnmatchedFace,
     User,
 )
+from app.domain.embeddings import normalize_embedding
 from app.services import CheckInService
 
 
@@ -207,6 +209,102 @@ def test_check_in_never_matches_profiles_from_other_model_or_dimension() -> None
     assert record.status is CheckInStatus.UNMATCHED
     assert record.user_id is None
     assert record.matched_face_profile_id is None
+
+
+@pytest.mark.parametrize(
+    "embedding",
+    [np.zeros(2, dtype=np.float32), np.array([np.nan, 1.0], dtype=np.float32)],
+    ids=("zero", "nan"),
+)
+def test_check_in_rejects_invalid_stored_candidate_vectors(embedding: np.ndarray) -> None:
+    service, records = _service([_profile(1, 10, embedding.tolist())])
+
+    with pytest.raises(FaceEmbeddingFailed):
+        service.check_in(b"image")
+
+    assert records.items == {}
+
+
+def test_candidate_changes_are_visible_on_the_next_request() -> None:
+    profiles = ProfileStore([])
+    records = CheckInStore()
+    service = CheckInService(
+        records,
+        profiles,
+        FixedEmbedder(),
+        threshold=0.4,
+        clock=lambda: datetime(2026, 9, 21, 9, tzinfo=UTC),
+    )
+
+    with pytest.raises(UnmatchedFace):
+        service.check_in(b"image")
+
+    profiles.add(_profile(1, 10, [2.0, 0.0]))
+    assert service.check_in(b"image").matched_face_profile_id == 1
+
+    profiles.delete(1)
+    with pytest.raises(UnmatchedFace):
+        service.check_in(b"image")
+
+
+@pytest.mark.parametrize("gallery_size", [1, 1000])
+@pytest.mark.parametrize("mixed_models", [False, True], ids=("homogeneous", "mixed"))
+def test_check_in_matches_legacy_algorithm(
+    gallery_size: int,
+    mixed_models: bool,
+) -> None:
+    rng = np.random.default_rng(23021685)
+    query = rng.normal(size=512).astype(np.float32)
+    profiles = [
+        _profile(
+            profile_id=index + 1,
+            user_id=index + 10,
+            embedding=(rng.normal(size=512) * rng.uniform(0.1, 10.0)).tolist(),
+            model_name="other" if mixed_models and index % 2 == 0 else "buffalo_s",
+        )
+        for index in range(gallery_size)
+    ]
+    compatible = [profile for profile in profiles if profile.model_name == "buffalo_s"]
+    if not compatible:
+        service, _ = _service(profiles, embedding=query)
+        with pytest.raises(UnmatchedFace) as caught:
+            service.check_in(b"image")
+        assert caught.value.best_score is None
+        return
+
+    legacy_matrix = np.stack([normalize_embedding(profile.embedding) for profile in compatible])
+    normalized_query = normalize_embedding(query)
+    legacy_scores = np.clip(legacy_matrix @ normalized_query, -1.0, 1.0)
+    legacy_index = int(np.argmax(legacy_scores))
+    legacy_score = float(legacy_scores[legacy_index])
+
+    for threshold in (float(np.nextafter(legacy_score, -1.0)), legacy_score):
+        service, _ = _service(profiles, embedding=query, threshold=threshold)
+        result = service.check_in(b"image")
+
+        assert result.matched_face_profile_id == compatible[legacy_index].id
+        assert result.similarity_score == pytest.approx(legacy_score, abs=1e-5)
+
+    above = float(np.nextafter(legacy_score, 1.0))
+    service, _ = _service(profiles, embedding=query, threshold=above)
+    with pytest.raises(UnmatchedFace) as caught:
+        service.check_in(b"image")
+    assert caught.value.best_score == pytest.approx(legacy_score, abs=1e-5)
+
+
+def test_check_in_accepts_legacy_score_at_threshold_for_unnormalized_512d_vector() -> None:
+    rng = np.random.default_rng(23021685)
+    query = rng.normal(size=512).astype(np.float32)
+    embedding = (rng.normal(size=(9, 512))[-1] * 3).astype(np.float32)
+    legacy_matrix = normalize_embedding(embedding)[None, :]
+    legacy_score = float((legacy_matrix @ normalize_embedding(query))[0])
+    profile = _profile(1, 10, embedding.tolist())
+    service, _ = _service([profile], embedding=query, threshold=legacy_score)
+
+    result = service.check_in(b"image")
+
+    assert result.matched_face_profile_id == profile.id
+    assert result.similarity_score == legacy_score
 
 
 def test_history_get_list_and_delete_use_repository_port() -> None:

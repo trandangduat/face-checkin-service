@@ -10,8 +10,13 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.api.authentication import AuthenticatedUser
 from app.core.config import get_settings
 from app.core.security import Argon2PasswordHasher
+from app.domain import NoFaceDetected, UnmatchedFace
 from app.domain.entities import Role, User
-from app.domain.errors import DomainError, InvalidToken, PermissionDenied
+from app.domain.errors import (
+    DomainError,
+    InvalidToken,
+    PermissionDenied,
+)
 from app.domain.ports import FaceEmbedder, PasswordHasher
 from app.ml import InsightFaceEmbedder
 from app.repositories import (
@@ -38,19 +43,39 @@ def get_session_factory() -> sessionmaker[Session]:
 
 def get_session() -> Iterator[Session]:
     session = get_session_factory()()
+
     try:
         yield session
-    except DomainError:
-        # Vẫn commit khi có lỗi nghiệp vụ để giữ lịch sử check-in thất bại.
-        session.commit()
+
+    except (NoFaceDetected, UnmatchedFace) as exc:
+        # Chỉ bắt hai lỗi đặc biệt.
+        if exc.record_id is not None:
+            try:
+                session.commit()  # Chỉ commit khi đã có ID audit.
+            except BaseException:
+                session.rollback()  # Nếu không có ID: Không được commit dữ liệu ghi dở.
+                raise
+        else:
+            session.rollback()
         raise
+
+    except DomainError:
+        session.rollback()
+        raise
+
     except BaseException:
         session.rollback()
         raise
+
     else:
-        session.commit()
+        try:
+            session.commit()  # Khi request kết thúc bình thường thì commit.
+        except BaseException:
+            session.rollback()
+            raise
+
     finally:
-        session.close()
+        session.close()  # Dù request thành công hay thất bại thì session đều phải được đóng.
 
 
 @lru_cache
